@@ -63,7 +63,7 @@ resource "aws_security_group" "devops_cluster_sg" {
 }
 
 resource "aws_security_group" "devops_node_sg" {
-  name        = "devops-sg"
+  name        = "devops-sg-node"
   description = "Security group for devops resources"
   vpc_id      = aws_vpc.devops_vpc.id
 
@@ -89,7 +89,7 @@ resource "aws_security_group" "devops_node_sg" {
 resource "aws_eks_cluster" "devops_cluster" {
   name     = "devops-cluster"
   role_arn = aws_iam_role.devops_cluster_role.arn
-  version  = "1.21"
+  #version  = "1.21"
 
   vpc_config {
     subnet_ids         = aws_subnet.devops_subnet[*].id
