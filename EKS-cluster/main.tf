@@ -113,7 +113,7 @@ resource "aws_eks_node_group" "devops_node_group" {
   instance_types = ["t3.large"]
 
   remote_access {
-    ec2_ssh_key = "devops"
+    ec2_ssh_key = "DevOps" # Use the variable defined in variables.tf
     source_security_group_ids = [aws_security_group.devops_node_sg.id] 
   }
 
