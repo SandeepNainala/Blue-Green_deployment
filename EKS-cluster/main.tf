@@ -121,3 +121,29 @@ resource "aws_eks_node_group" "devops_node_group" {
   }
   
 }
+
+resource "aws_iam_role" "devops_cluster_role" {
+  name = "devops-cluster-role"
+
+    assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "devops_cluster_policy_attachment" {
+  name       = "devops-cluster-policy-attachment"
+  roles      = [aws_iam_role.devops_cluster_role.name]
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  
+}
