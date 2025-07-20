@@ -84,3 +84,40 @@ resource "aws_security_group" "devops_node_sg" {
     name = "devops-node-sg"
   }
 }
+
+resource "aws_eks_cluster" "devops_cluster" {
+  name     = "devops-cluster"
+  role_arn = aws_iam_role.devops_cluster_role.arn
+  version  = "1.21"
+
+  vpc_config {
+    subnet_ids         = aws_subnet.devops_subnet[*].id
+    security_group_ids = [aws_security_group.devops_cluster_sg.id]
+  }
+  
+}
+
+resource "aws_eks_node_group" "devops_node_group" {
+  cluster_name    = aws_eks_cluster.devops_cluster.name
+  node_group_name = "devops-node-group"
+  node_role_arn   = aws_iam_role.devops_node_group_role.arn
+  subnet_ids      = aws_subnet.devops_subnet[*].id
+
+  scaling_config {
+    desired_size = 3
+    max_size     = 3
+    min_size     = 3
+  }
+
+  instance_types = ["t3.large"]
+
+  remote_access {
+    ec2_ssh_key = "devops"
+    source_security_group_ids = [aws_security_group.devops_node_sg.id] 
+  }
+
+  tags = {
+    name = "devops-node-group"
+  }
+  
+}
