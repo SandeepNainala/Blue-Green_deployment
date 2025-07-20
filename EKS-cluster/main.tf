@@ -40,9 +40,9 @@ resource "aws_route_table" "devops_route_table" {
 }
 
 resource "aws_route_table_association" "devops_route_table_association" {
-  subnet_id      = aws_subnet.devops_subnet.id
+  count         = 2 
+  subnet_id      = aws_subnet.devops_subnet[count.index].id
   route_table_id = aws_route_table.devops_route_table.id
-  count = length(aws_subnet.devops_subnet.*.id)
   
 }
 
