@@ -114,7 +114,7 @@ pipeline {
                 script {
                     withKubeConfig(caCertificate: '', clusterName: 'EKS-cluster', contextName: '', credentialsId: 'k8-token', namespace: 'webapps', restrictKubeConfigAccess: false, serverUrl: 'https://46743932FDE6B34C74566F392E30CABA.gr7.ap-south-1.eks.amazonaws.com') {
                         sh """ if ! kubectl get svc bankapp-service -n ${KUBE_NAMESPACE}; then
-                                kubectl apply -f bankapp-service.yml -n ${KUBE_NAMESPACE}
+                                kubectl apply -f bankapp-service.yaml -n ${KUBE_NAMESPACE}
                               fi
                         """
                 }
